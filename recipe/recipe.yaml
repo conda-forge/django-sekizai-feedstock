@@ -1,0 +1,50 @@
+schema_version: 1
+
+context:
+  name: django-sekizai
+  version: 4.1.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/django-sekizai-${{ version }}.tar.gz
+  sha256: 2aca36cbae0b5c0cefed9565416ec442335767fb3145bff11e58622fc653cdad
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - setuptools
+  run:
+    - python >=${{ python_min }}
+    - django >=3.2
+    - django-classy-tags >=3.0
+
+tests:
+  - python:
+      imports:
+        - sekizai
+      python_version: ${{ python_min }}.*
+  - requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - pip check
+
+about:
+  summary: Django Sekizai
+  license: BSD-3-Clause
+  license_file: LICENSE
+  homepage: https://github.com/django-cms/django-sekizai
+
+extra:
+  recipe-maintainers:
+    - rxm7706
